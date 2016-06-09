@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="txt_toolbar_all_pokemon">All Pokemon</string>
+    <string name="txt_empty_list_items">Pull to refresh</string>
+    <string name="error_no_network">No Internet Connection</string>
+
+    <string name="url_pokemon_icon">http://img.pokemondb.net/artwork/%s.jpg</string>
+
+</resources>
