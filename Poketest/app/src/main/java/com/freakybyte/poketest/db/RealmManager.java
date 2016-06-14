@@ -1,16 +1,19 @@
 package com.freakybyte.poketest.db;
 
-import android.content.Context;
-
+import com.freakybyte.poketest.PokeApplication;
 import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.util.DebugUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.DynamicRealm;
+import io.realm.FieldAttribute;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmMigration;
 import io.realm.RealmResults;
+import io.realm.RealmSchema;
 
 /**
  * Created by Jose Torres in FreakyByte on 07/06/16.
@@ -18,22 +21,45 @@ import io.realm.RealmResults;
 public class RealmManager {
     public static final String TAG = "RealmManager";
 
-    private Realm mRrealm;
-    private Context mContext;
+    private static Realm mRrealm;
+    private static RealmMigration mRealMigration;
+    private static RealmConfiguration mRealmConfiguration;
 
-    public RealmManager(Context mContext) {
-        this.mContext = mContext;
-    }
-
-    public Realm getRealm() {
-        if (mRrealm == null) {
-            RealmConfiguration realmConfig = new RealmConfiguration.Builder(mContext).build();
-            mRrealm = Realm.getInstance(realmConfig);
-        }
+    public static Realm getRealm() {
+        if (mRrealm == null)
+            mRrealm = Realm.getInstance(getRealmConfiguration());
         return mRrealm;
     }
 
-    public ArrayList<PokeModel> getAllPokemons() {
+    public static RealmConfiguration getRealmConfiguration() {
+        if (mRealmConfiguration == null) {
+            mRealmConfiguration = new RealmConfiguration.Builder(PokeApplication.getInstance())
+                    .deleteRealmIfMigrationNeeded().schemaVersion(1).migration(getRealMigration()).build();
+
+        }
+        return mRealmConfiguration;
+    }
+
+    public static RealmMigration getRealMigration() {
+        if (mRealMigration == null) {
+            mRealMigration = new RealmMigration() {
+                @Override
+                public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+
+                    RealmSchema schema = realm.getSchema();
+
+                    if (oldVersion == 0) {
+                        schema.get("PokeModel").addField("id", long.class, FieldAttribute.PRIMARY_KEY);
+                        oldVersion++;
+                    }
+
+                }
+            };
+        }
+        return mRealMigration;
+    }
+
+    public static ArrayList<PokeModel> getAllPokemons() {
         final RealmResults<PokeModel> rPokemons = getRealm().where(PokeModel.class).findAll();
 
         ArrayList<PokeModel> aPokemons = new ArrayList<>();
@@ -45,7 +71,7 @@ public class RealmManager {
         return aPokemons;
     }
 
-    public ArrayList<PokeModel> getNewPokemons(int iItems) {
+    public static ArrayList<PokeModel> getNewPokemons(int iItems) {
         final RealmResults<PokeModel> rPokemons = getRealm().where(PokeModel.class).findAll();
 
         ArrayList<PokeModel> aPokemons = new ArrayList<>();
@@ -57,20 +83,20 @@ public class RealmManager {
         return aPokemons;
     }
 
-    public void insertAllPokemons(List<PokeModel> aPokemon) {
+    public static void insertAllPokemons(List<PokeModel> aPokemon) {
         deleteAllPokemons();
         for (int a = 0; a < aPokemon.size(); a++) {
             insertPokemon(aPokemon.get(a));
         }
     }
 
-    public void insertNewPokemons(List<PokeModel> aPokemon) {
+    public static void insertNewPokemons(List<PokeModel> aPokemon) {
         for (int a = 0; a < aPokemon.size(); a++) {
             insertPokemon(aPokemon.get(a));
         }
     }
 
-    public void deleteAllPokemons() {
+    public static void deleteAllPokemons() {
         final RealmResults<PokeModel> rPokemons = getRealm().where(PokeModel.class).findAll();
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
@@ -81,19 +107,18 @@ public class RealmManager {
 
     }
 
-    public void insertPokemon(final PokeModel mPokemon) {
+    public static void insertPokemon(final PokeModel mPokemon) {
         try {
-            getRealm().executeTransaction(new Realm.Transaction() {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    PokeModel mRealm = getRealm().createObject(PokeModel.class);
-                    mRealm.setName(mPokemon.getName());
-                    mRealm.setUrl(mPokemon.getUrl());
+                    String[] aString = mPokemon.getUrl().split("/");
+                    mPokemon.setId(Long.parseLong(aString[aString.length - 1]));
+                    realm.copyToRealmOrUpdate(mPokemon);
                 }
             });
         } catch (Exception ex) {
             DebugUtils.logError(TAG, "insertPokemon:: " + ex.getLocalizedMessage());
         }
-
     }
 }

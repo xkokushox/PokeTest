@@ -4,6 +4,9 @@ package com.freakybyte.poketest.controller.home.impl;
 import com.freakybyte.poketest.controller.home.constructors.HomePresenter;
 import com.freakybyte.poketest.controller.home.constructors.HomeView;
 import com.freakybyte.poketest.controller.home.listener.OnRequestItemsListener;
+import com.freakybyte.poketest.model.PokeModel;
+
+import java.util.List;
 
 /**
  * Created by Jose Torres in FreakyByte on 01/06/16.
@@ -53,18 +56,21 @@ public class HomePresenterImpl implements HomePresenter, OnRequestItemsListener 
     @Override
     public void onRequestFailed() {
         mHomeView.onErrorLoading();
+        mHomeView.refreshAdapter();
         mHomeView.hideLoader();
     }
 
     @Override
-    public void onRequestSuccess() {
-        mHomeView.fillAdapter();
+    public void onRequestSuccess(List<PokeModel> listPokemon) {
+        mHomeView.fillAdapter(listPokemon);
+        mHomeView.refreshAdapter();
         mHomeView.hideLoader();
     }
 
     @Override
-    public void onRequestMoreData() {
-        mHomeView.addNewItemsToAdapter();
+    public void onRequestMoreData(List<PokeModel> listPokemon) {
+        mHomeView.addNewItemsToAdapter(listPokemon);
+        mHomeView.refreshAdapter();
         mHomeView.hideLoader();
     }
 

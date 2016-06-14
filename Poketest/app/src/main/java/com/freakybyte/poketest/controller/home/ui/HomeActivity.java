@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.freakybyte.poketest.R;
@@ -17,7 +18,11 @@ import com.freakybyte.poketest.controller.home.constructors.HomeView;
 import com.freakybyte.poketest.controller.home.impl.HomePresenterImpl;
 import com.freakybyte.poketest.controller.listener.RecyclerListListener;
 import com.freakybyte.poketest.db.RealmManager;
+import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.util.DebugUtils;
+import com.freakybyte.poketest.util.WidgetUtils;
+
+import java.util.List;
 
 /**
  * Created by Jose Torres in FreakyByte on 19/04/16.
@@ -30,14 +35,15 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog mLoaderDialog;
     private Toolbar mToolbar;
+    private LinearLayout mLayoutToolbarWrapper;
     private PokeListAdapter mAdapter;
 
     private HomePresenter mPresenter;
 
-    private RealmManager mRealmManager;
     private LinearLayoutManager mLayoutManager;
 
     private boolean bLoading;
+    private boolean bLoadMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +53,9 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
         setSupportActionBar(getToolbar());
 
         bLoading = true;
+        bLoadMore = true;
 
         mPresenter = new HomePresenterImpl(this);
-        mRealmManager = new RealmManager(this);
 
         getSwipeRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -57,15 +63,15 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
                 mPresenter.onRefreshFoodList();
             }
         });
-        getListFood().addOnScrollListener(new RecyclerView.OnScrollListener() {
+        getListPokemons().addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy > 0) {
-                    if (!bLoading && ((getLayoutManager().getChildCount() + getLayoutManager().findFirstVisibleItemPosition()) >= getLayoutManager().getItemCount())) {
-                        DebugUtils.logDebug(TAG, "onScrolled:: End of list");
+                    if (!bLoading && bLoadMore && ((getLayoutManager().getChildCount() + getLayoutManager().findFirstVisibleItemPosition()) >= getLayoutManager().getItemCount())) {
+                        WidgetUtils.createShortToast(R.string.txt_retrieve_more_pokemons);
                         bLoading = true;
                         mPresenter.getMoreItems(getListAdapter().getItemCount());
                     }
@@ -74,7 +80,9 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
             }
         });
 
-        getListFood().setAdapter(getListAdapter());
+        getListPokemons().setAdapter(getListAdapter());
+
+        getLayoutToolbarWrapper().setOnClickListener(HomeActivity.this);
 
         mPresenter.getItems();
     }
@@ -108,34 +116,37 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
     }
 
     @Override
-    public void fillAdapter() {
+    public void fillAdapter(final List<PokeModel> listPokemon) {
+        bLoadMore = listPokemon.size() > 0;
+        getListAdapter().getListPokemon().clear();
+        getListAdapter().getListPokemon().addAll(listPokemon);
+    }
+
+    @Override
+    public void addNewItemsToAdapter(List<PokeModel> listPokemon) {
+        bLoadMore = listPokemon.size() > 0;
+        getListAdapter().getListPokemon().addAll(listPokemon);
+    }
+
+    @Override
+    public void refreshAdapter() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                getListAdapter().getListPokemon().clear();
-                getListAdapter().getListPokemon().addAll(mRealmManager.getAllPokemons());
-                refreshAdapter();
+                getTxtEmptyView().setVisibility(getListAdapter().getListPokemon().isEmpty() ? View.VISIBLE : View.GONE);
+                getListAdapter().notifyDataSetChanged();
+                DebugUtils.logDebug(TAG, "TotalPokemons:: " + getListAdapter().getItemCount());
             }
         });
     }
 
     @Override
-    public void addNewItemsToAdapter() {
-        getListAdapter().getListPokemon().addAll(mRealmManager.getNewPokemons(getListAdapter().getItemCount()));
-        refreshAdapter();
-    }
-
-    @Override
-    public void refreshAdapter() {
-        getTxtEmptyView().setVisibility(getListAdapter().getListPokemon().isEmpty() ? View.VISIBLE : View.GONE);
-        getListFood().setVisibility(getListAdapter().getListPokemon().isEmpty() ? View.GONE : View.VISIBLE);
-        getListAdapter().notifyDataSetChanged();
-    }
-
-    @Override
     public void onErrorLoading() {
+
+        WidgetUtils.createShortToast(R.string.error_service_retrieve);
+
         if (getListAdapter().getListPokemon().isEmpty())
-            fillAdapter();
+            fillAdapter(RealmManager.getAllPokemons());
     }
 
     @Override
@@ -146,7 +157,9 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
+            case R.id.layoutToolbarWrapper:
+                getListPokemons().smoothScrollToPosition(0);
+                break;
             default:
                 DebugUtils.logError(TAG, "OnClick:: view not handled " + v.getId());
                 break;
@@ -183,7 +196,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
         return mLayoutManager;
     }
 
-    private RecyclerView getListFood() {
+    private RecyclerView getListPokemons() {
         if (mRecyclerView == null) {
             mRecyclerView = (RecyclerView) findViewById(R.id.list_food);
             mRecyclerView.setLayoutManager(getLayoutManager());
@@ -195,5 +208,11 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
         if (mAdapter == null)
             mAdapter = new PokeListAdapter(HomeActivity.this, HomeActivity.this);
         return mAdapter;
+    }
+
+    private LinearLayout getLayoutToolbarWrapper() {
+        if (mLayoutToolbarWrapper == null)
+            mLayoutToolbarWrapper = (LinearLayout) findViewById(R.id.layoutToolbarWrapper);
+        return mLayoutToolbarWrapper;
     }
 }

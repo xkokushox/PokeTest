@@ -1,12 +1,12 @@
 package com.freakybyte.poketest.controller.home.impl;
 
 
-import com.freakybyte.poketest.PokeApplication;
 import com.freakybyte.poketest.controller.home.constructors.HomeInteractor;
 import com.freakybyte.poketest.controller.home.listener.OnRequestItemsListener;
 import com.freakybyte.poketest.db.RealmManager;
 import com.freakybyte.poketest.model.AllPokeModel;
 import com.freakybyte.poketest.util.DebugUtils;
+import com.freakybyte.poketest.util.SharedPreferencesUtil;
 import com.freakybyte.poketest.web.MyApiEndpointInterface;
 import com.freakybyte.poketest.web.RetrofitBuilder;
 
@@ -37,11 +37,13 @@ public class HomeInteractorImpl implements HomeInteractor {
                         AllPokeModel aPokemons = response.body();
 
                         DebugUtils.logDebug(TAG, "GetItemsFromServer: Num Pokemons:: " + aPokemons.getResults().size());
+                        DebugUtils.logDebug(TAG, "GetItemsFromServer: Total Pokemons:: " + aPokemons.getCount());
 
-                        RealmManager mRealManager = new RealmManager(PokeApplication.getInstance());
-                        mRealManager.insertAllPokemons(aPokemons.getResults());
+                        SharedPreferencesUtil.setAppPreference(SharedPreferencesUtil.TOTAL_POKEMONS, aPokemons.getCount());
 
-                        mListener.onRequestSuccess();
+                        RealmManager.insertAllPokemons(aPokemons.getResults());
+
+                        mListener.onRequestSuccess(aPokemons.getResults());
                         break;
                     default:
                         DebugUtils.logError("GetItemsFromServer:: Error Code:: " + response.code());
@@ -76,10 +78,9 @@ public class HomeInteractorImpl implements HomeInteractor {
 
                         DebugUtils.logDebug(TAG, "getMoreItemsFromServer: Num Pokemons:: " + aPokemons.getResults().size());
 
-                        RealmManager mRealManager = new RealmManager(PokeApplication.getInstance());
-                        mRealManager.insertNewPokemons(aPokemons.getResults());
+                        RealmManager.insertNewPokemons(aPokemons.getResults());
 
-                        mListener.onRequestMoreData();
+                        mListener.onRequestMoreData(aPokemons.getResults());
                         break;
                     default:
                         DebugUtils.logError("GetItemsFromServer:: Error Code:: " + response.code());
