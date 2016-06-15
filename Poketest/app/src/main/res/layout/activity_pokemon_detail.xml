@@ -49,6 +49,7 @@
                     android:layout_height="140dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
+                    android:transitionName="@string/activity_image_trans"
                     android:layout_gravity="center"
                     android:elevation="6dp"
                     android:scaleType="centerInside"

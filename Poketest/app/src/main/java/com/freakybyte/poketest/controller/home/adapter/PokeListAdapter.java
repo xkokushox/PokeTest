@@ -40,7 +40,7 @@ public class PokeListAdapter extends RecyclerView.Adapter<ItemPokeWrapper> {
     }
 
     @Override
-    public void onBindViewHolder(ItemPokeWrapper viewHolder, final int position) {
+    public void onBindViewHolder(final ItemPokeWrapper viewHolder, final int position) {
         final PokeModel mPokemon = aListPokemon.get(position);
 
         viewHolder.getTxName().setText(mPokemon.getName());
@@ -50,14 +50,14 @@ public class PokeListAdapter extends RecyclerView.Adapter<ItemPokeWrapper> {
             @Override
             public void onClick(View v) {
                 if (mClickListener != null)
-                    mClickListener.OnItemClickListener(position);
+                    mClickListener.OnItemClickListener(viewHolder.getImgRowIcon(), position);
             }
         });
         viewHolder.getTxName().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mClickListener != null)
-                    mClickListener.OnItemClickListener(position);
+                    mClickListener.OnItemClickListener(viewHolder.getImgRowIcon(), position);
             }
         });
     }

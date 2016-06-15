@@ -1,7 +1,9 @@
 package com.freakybyte.poketest.controller.home.ui;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.freakybyte.poketest.R;
 import com.freakybyte.poketest.controller.MainActivity;
 import com.freakybyte.poketest.controller.detail.DetailActivity;
@@ -154,10 +157,16 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
     }
 
     @Override
-    public void OnItemClickListener(int iPosition) {
+    public void OnItemClickListener(SimpleDraweeView imgPokemon, int iPosition) {
+
         Intent mIntent = new Intent(HomeActivity.this, DetailActivity.class);
         mIntent.putExtra(DetailActivity.TAG_ID, getListAdapter().getListPokemon().get(iPosition).getId());
-        startActivity(mIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imgPokemon, getString(R.string.activity_image_trans));
+            startActivity(mIntent, options.toBundle());
+        } else
+            startActivity(mIntent);
     }
 
     @Override
