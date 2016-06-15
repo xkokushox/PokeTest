@@ -13,4 +13,6 @@ public interface DetailView {
     void updateInformation(PokemonDetailModel mPokemon);
 
     void onErrorDownloading();
+
+    void showAnimation();
 }

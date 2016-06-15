@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -26,6 +27,8 @@ import com.freakybyte.poketest.controller.dialog.ProgressDialog;
 import com.freakybyte.poketest.db.RealmManager;
 import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.model.summary.PokemonDetailModel;
+import com.freakybyte.poketest.ui.textview.AutoFitTxtView;
+import com.freakybyte.poketest.util.AndroidUtil;
 import com.freakybyte.poketest.util.PokeTestUtil;
 
 /**
@@ -44,10 +47,12 @@ public class DetailActivity extends MainActivity implements DetailView {
     private SimpleDraweeView imgSpriteTwo;
     private SimpleDraweeView imgSpriteThree;
     private SimpleDraweeView imgSpriteFour;
-    private TextView mTxtPokemonHeight;
-    private TextView mTxtPokemonWeight;
-    private TextView mTxtPokemonAbilities;
-    private TextView mTxtPokemonMoves;
+    private TextView txtPokemonHeight;
+    private TextView txtPokemonWeight;
+    private TextView txtPokemonAbilities;
+    private TextView txtPokemonMoves;
+    private AutoFitTxtView txtTypeOne;
+    private AutoFitTxtView txtTypeTwo;
 
 
     private ProgressDialog mLoaderDialog;
@@ -61,16 +66,33 @@ public class DetailActivity extends MainActivity implements DetailView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_detail);
 
-        mPokemon = RealmManager.getPokemon(getIntent().getLongExtra(TAG_ID, 1));
-
         setSupportActionBar(getToolbar());
 
-        getCollapsingToolbar().setTitle(mPokemon.getName());
-
+        mPokemon = RealmManager.getPokemon(getIntent().getLongExtra(TAG_ID, 1));
         mPresenter = new DetailPresenterImpl(this);
 
         mPresenter.onGetPokemonInformation(mPokemon.getId());
 
+        getCollapsingToolbar().setTitle(AndroidUtil.getCapitalizeWord(mPokemon.getName()));
+
+        getImgPokemon().setImageURI(PokeTestUtil.getUrlStringToFullPokemon(mPokemon.getId()));
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        getToolbar().setNavigationIcon(getResources().getDrawable(R.drawable.vector_icon_back_navigation));
+        getToolbar().setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        showAnimation();
+    }
+
+    @Override
+    public void showAnimation() {
         ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
             @Override
             public void onFinalImageSet(
@@ -95,7 +117,6 @@ public class DetailActivity extends MainActivity implements DetailView {
                 .build();
         getImageAnimation().setHierarchy(hierarchy);
     }
-
 
     @Override
     public void showLoader(final String sMessage, final boolean bCancelable) {
@@ -127,11 +148,22 @@ public class DetailActivity extends MainActivity implements DetailView {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
+                if (mPokemonDetail.getTypes().size() > 1) {
+                    getTxtTypeOne().setVisibility(View.VISIBLE);
+                    PokeTestUtil.setType(mPokemonDetail.getTypes().get(0).getType().getName(), getTxtTypeOne());
+                    getTxtTypeTwo().setVisibility(View.VISIBLE);
+                    PokeTestUtil.setType(mPokemonDetail.getTypes().get(1).getType().getName(), getTxtTypeTwo());
+                } else {
+                    getTxtTypeOne().setVisibility(View.VISIBLE);
+                    PokeTestUtil.setType(mPokemonDetail.getTypes().get(0).getType().getName(), getTxtTypeOne());
+                    getTxtTypeTwo().setVisibility(View.GONE);
+                }
+
                 getTxtPokemonHeight().setText(String.format(getString(R.string.txt_detail_height), PokeTestUtil.getHeight(mPokemonDetail.getHeight())));
                 getTxtPokemonWeight().setText(String.format(getString(R.string.txt_detail_weight), PokeTestUtil.getWeight(mPokemonDetail.getWeight())));
                 getTxtPokemonAbilities().setText(PokeTestUtil.getAbilities(mPokemonDetail.getAbilities()));
                 getTxtPokemonMoves().setText(PokeTestUtil.getMoves(mPokemonDetail.getMoves()));
-                getImgPokemon().setImageURI(PokeTestUtil.getUrlStringToFullPokemon(mPokemon.getId()));
                 getImgSpriteOne().setImageURI(mPokemonDetail.getSprites().getBackDefault());
                 getImgSpriteTwo().setImageURI(mPokemonDetail.getSprites().getFrontDefault());
                 getImgSpriteThree().setImageURI(mPokemonDetail.getSprites().getBackShiny());
@@ -194,26 +226,38 @@ public class DetailActivity extends MainActivity implements DetailView {
     }
 
     private TextView getTxtPokemonHeight() {
-        if (mTxtPokemonHeight == null)
-            mTxtPokemonHeight = (TextView) findViewById(R.id.txtPokemonHeight);
-        return mTxtPokemonHeight;
+        if (txtPokemonHeight == null)
+            txtPokemonHeight = (TextView) findViewById(R.id.txtPokemonHeight);
+        return txtPokemonHeight;
     }
 
     private TextView getTxtPokemonWeight() {
-        if (mTxtPokemonWeight == null)
-            mTxtPokemonWeight = (TextView) findViewById(R.id.txtPokemonWeight);
-        return mTxtPokemonWeight;
+        if (txtPokemonWeight == null)
+            txtPokemonWeight = (TextView) findViewById(R.id.txtPokemonWeight);
+        return txtPokemonWeight;
     }
 
     private TextView getTxtPokemonAbilities() {
-        if (mTxtPokemonAbilities == null)
-            mTxtPokemonAbilities = (TextView) findViewById(R.id.txtPokemonAbilities);
-        return mTxtPokemonAbilities;
+        if (txtPokemonAbilities == null)
+            txtPokemonAbilities = (TextView) findViewById(R.id.txtPokemonAbilities);
+        return txtPokemonAbilities;
     }
 
     private TextView getTxtPokemonMoves() {
-        if (mTxtPokemonMoves == null)
-            mTxtPokemonMoves = (TextView) findViewById(R.id.txtPokemonMoves);
-        return mTxtPokemonMoves;
+        if (txtPokemonMoves == null)
+            txtPokemonMoves = (TextView) findViewById(R.id.txtPokemonMoves);
+        return txtPokemonMoves;
+    }
+
+    private AutoFitTxtView getTxtTypeOne() {
+        if (txtTypeOne == null)
+            txtTypeOne = (AutoFitTxtView) findViewById(R.id.txtTypeOne);
+        return txtTypeOne;
+    }
+
+    private AutoFitTxtView getTxtTypeTwo() {
+        if (txtTypeTwo == null)
+            txtTypeTwo = (AutoFitTxtView) findViewById(R.id.txtTypeTwo);
+        return txtTypeTwo;
     }
 }
