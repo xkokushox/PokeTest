@@ -61,14 +61,15 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                style="@style/TxtToolbarTitle"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:title=""
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
 
             </android.support.v7.widget.Toolbar>
+
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -83,6 +84,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:orientation="vertical">
+
 
             <TextView
                 style="@style/TxtPokemonDetailSection"
@@ -105,7 +107,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/background_type_fire"
-                    android:text="FIRE" />
+                    android:text="FIRE"
+                    android:visibility="gone" />
 
                 <com.freakybyte.poketest.ui.textview.AutoFitTxtView
                     android:id="@+id/txtTypeTwo"
@@ -115,7 +118,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/background_type_fly"
-                    android:text="FLY" />
+                    android:text="FLY"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
