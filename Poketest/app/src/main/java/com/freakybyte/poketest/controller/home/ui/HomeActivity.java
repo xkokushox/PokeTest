@@ -1,5 +1,6 @@
 package com.freakybyte.poketest.controller.home.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,8 +12,9 @@ import android.widget.TextView;
 
 import com.freakybyte.poketest.R;
 import com.freakybyte.poketest.controller.MainActivity;
-import com.freakybyte.poketest.controller.adapter.PokeListAdapter;
+import com.freakybyte.poketest.controller.detail.DetailActivity;
 import com.freakybyte.poketest.controller.dialog.ProgressDialog;
+import com.freakybyte.poketest.controller.home.adapter.PokeListAdapter;
 import com.freakybyte.poketest.controller.home.constructors.HomePresenter;
 import com.freakybyte.poketest.controller.home.constructors.HomeView;
 import com.freakybyte.poketest.controller.home.impl.HomePresenterImpl;
@@ -87,6 +89,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
         mPresenter.getItems();
     }
 
+
     @Override
     public void showLoader(final String sMessage, final boolean bCancelable) {
 
@@ -122,6 +125,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
         getListAdapter().getListPokemon().addAll(listPokemon);
     }
 
+
     @Override
     public void addNewItemsToAdapter(List<PokeModel> listPokemon) {
         bLoadMore = listPokemon.size() > 0;
@@ -151,7 +155,9 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
 
     @Override
     public void OnItemClickListener(int iPosition) {
-
+        Intent mIntent = new Intent(HomeActivity.this, DetailActivity.class);
+        mIntent.putExtra(DetailActivity.TAG_ID, getListAdapter().getListPokemon().get(iPosition).getId());
+        startActivity(mIntent);
     }
 
     @Override

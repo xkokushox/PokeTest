@@ -14,6 +14,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmMigration;
 import io.realm.RealmResults;
 import io.realm.RealmSchema;
+import io.realm.Sort;
 
 /**
  * Created by Jose Torres in FreakyByte on 07/06/16.
@@ -60,8 +61,8 @@ public class RealmManager {
     }
 
     public static ArrayList<PokeModel> getAllPokemons() {
-        final RealmResults<PokeModel> rPokemons = getRealm().where(PokeModel.class).findAll();
-
+        RealmResults<PokeModel> rPokemons = getRealm().where(PokeModel.class).findAll();
+        rPokemons = rPokemons.sort("id", Sort.ASCENDING);
         ArrayList<PokeModel> aPokemons = new ArrayList<>();
 
         for (int a = 0; a < rPokemons.size(); a++)
@@ -71,16 +72,9 @@ public class RealmManager {
         return aPokemons;
     }
 
-    public static ArrayList<PokeModel> getNewPokemons(int iItems) {
-        final RealmResults<PokeModel> rPokemons = getRealm().where(PokeModel.class).findAll();
-
-        ArrayList<PokeModel> aPokemons = new ArrayList<>();
-
-        for (int a = iItems; a < rPokemons.size(); a++)
-            aPokemons.add(rPokemons.get(a));
-
-
-        return aPokemons;
+    public static PokeModel getPokemon(long idPokemon) {
+        RealmResults<PokeModel> aPokemons = getRealm().where(PokeModel.class).equalTo("id", idPokemon).findAll();
+        return aPokemons.get(0);
     }
 
     public static void insertAllPokemons(List<PokeModel> aPokemon) {

@@ -11,6 +11,9 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class PokeModel extends RealmObject {
+
+    public static final String TAG = "PokeModel";
+
     @PrimaryKey
     private long id;
     @SerializedName("url")
@@ -22,12 +25,6 @@ public class PokeModel extends RealmObject {
 
 
     public PokeModel() {
-    }
-
-
-    public PokeModel(String name, String url) {
-        this.name = name;
-        this.url = url;
     }
 
     public String getName() {

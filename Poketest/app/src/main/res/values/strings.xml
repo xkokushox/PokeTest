@@ -5,10 +5,14 @@
 
 
     <string name="txt_retrieve_more_pokemons">We are downloading more pokemons</string>
+    <string name="txt_detail_height">%.1f m.</string>
+    <string name="txt_detail_weight">%.1f kg.</string>
 
     <string name="error_no_network">No Internet Connection</string>
     <string name="error_service_retrieve">There is a problem retrieving the Pokemons</string>
 
     <string name="url_pokemon_icon">http://img.pokemondb.net/artwork/%s.jpg</string>
+    <string name="url_pokemon_gif">http://www.pokexperto.net/3ds/sprites/pokedex/animados/%s.gif</string>
+    <string name="url_pokemon_full">http://assets.pokemon.com/assets/cms2/img/pokedex/full/%s.png</string>
 
 </resources>

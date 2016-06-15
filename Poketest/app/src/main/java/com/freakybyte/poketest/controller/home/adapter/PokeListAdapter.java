@@ -1,4 +1,4 @@
-package com.freakybyte.poketest.controller.adapter;
+package com.freakybyte.poketest.controller.home.adapter;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -53,7 +53,13 @@ public class PokeListAdapter extends RecyclerView.Adapter<ItemPokeWrapper> {
                     mClickListener.OnItemClickListener(position);
             }
         });
-
+        viewHolder.getTxName().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mClickListener != null)
+                    mClickListener.OnItemClickListener(position);
+            }
+        });
     }
 
 
