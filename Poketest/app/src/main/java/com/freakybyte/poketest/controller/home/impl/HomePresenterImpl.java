@@ -74,4 +74,9 @@ public class HomePresenterImpl implements HomePresenter, OnRequestItemsListener 
         mHomeView.hideLoader();
     }
 
+    @Override
+    public void onRequestBackup(List<PokeModel> listPokemon) {
+        mHomeView.fillAdapter(listPokemon);
+    }
+
 }

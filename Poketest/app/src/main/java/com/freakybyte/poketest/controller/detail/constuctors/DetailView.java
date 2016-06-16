@@ -1,5 +1,6 @@
 package com.freakybyte.poketest.controller.detail.constuctors;
 
+import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.model.summary.PokemonDetailModel;
 
 /**
@@ -13,6 +14,8 @@ public interface DetailView {
     void updateInformation(PokemonDetailModel mPokemon);
 
     void onErrorDownloading();
+
+    void setPokemonItem(PokeModel mPokemon);
 
     void showAnimation();
 }

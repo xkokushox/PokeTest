@@ -22,7 +22,6 @@ import com.freakybyte.poketest.controller.home.constructors.HomePresenter;
 import com.freakybyte.poketest.controller.home.constructors.HomeView;
 import com.freakybyte.poketest.controller.home.impl.HomePresenterImpl;
 import com.freakybyte.poketest.controller.listener.RecyclerListListener;
-import com.freakybyte.poketest.db.RealmManager;
 import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.util.DebugUtils;
 import com.freakybyte.poketest.util.WidgetUtils;
@@ -128,7 +127,6 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
         getListAdapter().getListPokemon().addAll(listPokemon);
     }
 
-
     @Override
     public void addNewItemsToAdapter(List<PokeModel> listPokemon) {
         bLoadMore = listPokemon.size() > 0;
@@ -149,11 +147,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
 
     @Override
     public void onErrorLoading() {
-
         WidgetUtils.createShortToast(R.string.error_service_retrieve);
-
-        if (getListAdapter().getListPokemon().isEmpty())
-            fillAdapter(RealmManager.getAllPokemons());
     }
 
     @Override

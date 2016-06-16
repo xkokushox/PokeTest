@@ -11,4 +11,5 @@ public interface HomeInteractor {
     void getItemsFromServer(OnRequestItemsListener mListener);
 
     void getMoreItemsFromServer(int nItems, OnRequestItemsListener mListener);
+
 }

@@ -15,4 +15,6 @@ public interface OnRequestItemsListener {
 
     void onRequestMoreData(List<PokeModel> listPokemon);
 
+    void onRequestBackup(List<PokeModel> listPokemon);
+
 }

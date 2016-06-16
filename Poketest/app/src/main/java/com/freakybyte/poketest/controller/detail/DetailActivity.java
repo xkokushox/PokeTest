@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,12 +26,12 @@ import com.freakybyte.poketest.controller.detail.constuctors.DetailPresenter;
 import com.freakybyte.poketest.controller.detail.constuctors.DetailView;
 import com.freakybyte.poketest.controller.detail.impl.DetailPresenterImpl;
 import com.freakybyte.poketest.controller.dialog.ProgressDialog;
-import com.freakybyte.poketest.db.RealmManager;
 import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.model.summary.PokemonDetailModel;
 import com.freakybyte.poketest.ui.textview.AutoFitTxtView;
 import com.freakybyte.poketest.util.AndroidUtil;
 import com.freakybyte.poketest.util.PokeTestUtil;
+import com.freakybyte.poketest.util.WidgetUtils;
 
 /**
  * Created by Jose Torres in FreakyByte on 14/06/16.
@@ -54,7 +56,6 @@ public class DetailActivity extends MainActivity implements DetailView {
     private AutoFitTxtView txtTypeOne;
     private AutoFitTxtView txtTypeTwo;
 
-
     private ProgressDialog mLoaderDialog;
 
     private DetailPresenter mPresenter;
@@ -68,14 +69,7 @@ public class DetailActivity extends MainActivity implements DetailView {
 
         setSupportActionBar(getToolbar());
 
-        mPokemon = RealmManager.getPokemon(getIntent().getLongExtra(TAG_ID, 1));
         mPresenter = new DetailPresenterImpl(this);
-
-        mPresenter.onGetPokemonInformation(mPokemon.getId());
-
-        getCollapsingToolbar().setTitle(AndroidUtil.getCapitalizeWord(mPokemon.getName()));
-
-        getImgPokemon().setImageURI(PokeTestUtil.getUrlStringToFullPokemon(mPokemon.getId()));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -88,7 +82,23 @@ public class DetailActivity extends MainActivity implements DetailView {
             }
         });
 
+        mPresenter.onGetPokemonInformation(getIntent().getLongExtra(TAG_ID, 1));
+
         showAnimation();
+    }
+
+
+    @Override
+    public void setPokemonItem(PokeModel pokemon) {
+        mPokemon = pokemon;
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getImgPokemon().setImageURI(PokeTestUtil.getUrlStringToFullPokemon(mPokemon.getId()));
+                getCollapsingToolbar().setTitle(AndroidUtil.getCapitalizeWord(mPokemon.getName()));
+            }
+        });
     }
 
     @Override
@@ -174,7 +184,31 @@ public class DetailActivity extends MainActivity implements DetailView {
 
     @Override
     public void onErrorDownloading() {
-        finish();
+        WidgetUtils.createShortToast(R.string.error_service_retrieve_detail);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                mPresenter.onGetPokemonInformation(getIntent().getLongExtra(TAG_ID, 1));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
+        mPresenter = null;
     }
 
     private Toolbar getToolbar() {

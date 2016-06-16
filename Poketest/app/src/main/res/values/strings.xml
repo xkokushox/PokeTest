@@ -10,6 +10,7 @@
 
     <string name="error_no_network">No Internet Connection</string>
     <string name="error_service_retrieve">There is a problem retrieving the Pokemons</string>
+    <string name="error_service_retrieve_detail">There is a problem retrieving the Pokemon Detail, please tap refresh icon</string>
 
     <string name="url_pokemon_icon">http://img.pokemondb.net/artwork/%s.jpg</string>
     <string name="url_pokemon_gif">http://www.pokexperto.net/3ds/sprites/pokedex/animados/%s.gif</string>

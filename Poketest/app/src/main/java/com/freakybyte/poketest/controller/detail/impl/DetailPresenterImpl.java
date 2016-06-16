@@ -3,6 +3,7 @@ package com.freakybyte.poketest.controller.detail.impl;
 import com.freakybyte.poketest.controller.detail.constuctors.DetailPresenter;
 import com.freakybyte.poketest.controller.detail.constuctors.DetailView;
 import com.freakybyte.poketest.controller.detail.listener.OnRequestDetailListener;
+import com.freakybyte.poketest.db.RealmManager;
 import com.freakybyte.poketest.model.summary.PokemonDetailModel;
 
 /**
@@ -23,6 +24,7 @@ public class DetailPresenterImpl implements DetailPresenter, OnRequestDetailList
         if (mView == null)
             return;
 
+        mView.setPokemonItem(RealmManager.getInstance().getPokemon(id));
         mView.showLoader("Loading", false);
         mInteractor.getPokemonDetailFromServer(this, id);
     }
