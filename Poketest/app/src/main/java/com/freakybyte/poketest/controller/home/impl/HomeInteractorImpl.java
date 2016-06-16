@@ -41,12 +41,13 @@ public class HomeInteractorImpl implements HomeInteractor {
 
                         SharedPreferencesUtil.setAppPreference(SharedPreferencesUtil.TOTAL_POKEMONS, aPokemons.getCount());
 
-                        RealmManager.insertAllPokemons(aPokemons.getResults());
+                        RealmManager.getInstance().insertAllPokemons(aPokemons.getResults());
 
                         mListener.onRequestSuccess(aPokemons.getResults());
                         break;
                     default:
                         DebugUtils.logError("GetItemsFromServer:: Error Code:: " + response.code());
+                        mListener.onRequestBackup(RealmManager.getInstance().getAllPokemons());
                         mListener.onRequestFailed();
                         break;
                 }
@@ -55,6 +56,7 @@ public class HomeInteractorImpl implements HomeInteractor {
             @Override
             public void onFailure(Call<AllPokeModel> call, Throwable t) {
                 DebugUtils.logError("GetItemsFromServer:: onFailure:: " + t.getLocalizedMessage());
+                mListener.onRequestBackup(RealmManager.getInstance().getAllPokemons());
                 mListener.onRequestFailed();
             }
 
@@ -78,7 +80,7 @@ public class HomeInteractorImpl implements HomeInteractor {
 
                         DebugUtils.logDebug(TAG, "getMoreItemsFromServer: Num Pokemons:: " + aPokemons.getResults().size());
 
-                        RealmManager.insertNewPokemons(aPokemons.getResults());
+                        RealmManager.getInstance().insertNewPokemons(aPokemons.getResults());
 
                         mListener.onRequestMoreData(aPokemons.getResults());
                         break;
