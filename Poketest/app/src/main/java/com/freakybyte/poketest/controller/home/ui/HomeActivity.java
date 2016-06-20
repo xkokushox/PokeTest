@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.freakybyte.poketest.PokeApplication;
 import com.freakybyte.poketest.R;
 import com.freakybyte.poketest.controller.MainActivity;
 import com.freakybyte.poketest.controller.detail.DetailActivity;
@@ -24,15 +25,20 @@ import com.freakybyte.poketest.controller.home.impl.HomePresenterImpl;
 import com.freakybyte.poketest.controller.listener.RecyclerListListener;
 import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.util.DebugUtils;
-import com.freakybyte.poketest.util.WidgetUtils;
+import com.freakybyte.poketest.util.WidgetManager;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created by Jose Torres in FreakyByte on 19/04/16.
  */
 public class HomeActivity extends MainActivity implements HomeView, RecyclerListListener, View.OnClickListener {
     public static final String TAG = "HomeActivity";
+
+    @Inject
+    public WidgetManager mWidgetManager;
 
     private RecyclerView mRecyclerView;
     private TextView txtEmptyView;
@@ -53,6 +59,8 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        ((PokeApplication) getApplication()).getStorageComponent().inject(this);
 
         setSupportActionBar(getToolbar());
 
@@ -75,7 +83,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
 
                 if (dy > 0) {
                     if (!bLoading && bLoadMore && ((getLayoutManager().getChildCount() + getLayoutManager().findFirstVisibleItemPosition()) >= getLayoutManager().getItemCount())) {
-                        WidgetUtils.createShortToast(R.string.txt_retrieve_more_pokemons);
+                        mWidgetManager.createShortToast(R.string.txt_retrieve_more_pokemons);
                         bLoading = true;
                         mPresenter.getMoreItems(getListAdapter().getItemCount());
                     }
@@ -84,11 +92,15 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
             }
         });
 
+
         getListPokemons().setAdapter(getListAdapter());
 
         getLayoutToolbarWrapper().setOnClickListener(HomeActivity.this);
 
         mPresenter.getItems();
+
+        DebugUtils.logDebug(TAG, "Injection Worked:" + mWidgetManager != null);
+
     }
 
 
@@ -147,7 +159,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
 
     @Override
     public void onErrorLoading() {
-        WidgetUtils.createShortToast(R.string.error_service_retrieve);
+        mWidgetManager.createShortToast(R.string.error_service_retrieve);
     }
 
     @Override

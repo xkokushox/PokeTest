@@ -1,7 +1,6 @@
 package com.freakybyte.poketest.controller.home.adapter;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import com.freakybyte.poketest.R;
 import com.freakybyte.poketest.controller.listener.RecyclerListListener;
 import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.ui.wrapper.ItemPokeWrapper;
+import com.freakybyte.poketest.util.PokeTestUtil;
 
 import java.util.ArrayList;
 
@@ -44,7 +44,7 @@ public class PokeListAdapter extends RecyclerView.Adapter<ItemPokeWrapper> {
         final PokeModel mPokemon = aListPokemon.get(position);
 
         viewHolder.getTxName().setText(mPokemon.getName());
-        viewHolder.getImgRowIcon().setImageURI(Uri.parse(String.format(mActivity.getString(R.string.url_pokemon_icon), mPokemon.getName())));
+        viewHolder.getImgRowIcon().setImageURI(PokeTestUtil.getUrlStringToFullPokemon(mPokemon.getId()));
 
         viewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override

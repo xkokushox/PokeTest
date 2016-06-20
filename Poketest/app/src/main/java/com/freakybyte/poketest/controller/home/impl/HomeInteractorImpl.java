@@ -6,7 +6,6 @@ import com.freakybyte.poketest.controller.home.listener.OnRequestItemsListener;
 import com.freakybyte.poketest.db.RealmManager;
 import com.freakybyte.poketest.model.AllPokeModel;
 import com.freakybyte.poketest.util.DebugUtils;
-import com.freakybyte.poketest.util.SharedPreferencesUtil;
 import com.freakybyte.poketest.web.MyApiEndpointInterface;
 import com.freakybyte.poketest.web.RetrofitBuilder;
 
@@ -38,8 +37,6 @@ public class HomeInteractorImpl implements HomeInteractor {
 
                         DebugUtils.logDebug(TAG, "GetItemsFromServer: Num Pokemons:: " + aPokemons.getResults().size());
                         DebugUtils.logDebug(TAG, "GetItemsFromServer: Total Pokemons:: " + aPokemons.getCount());
-
-                        SharedPreferencesUtil.setAppPreference(SharedPreferencesUtil.TOTAL_POKEMONS, aPokemons.getCount());
 
                         RealmManager.getInstance().insertAllPokemons(aPokemons.getResults());
 

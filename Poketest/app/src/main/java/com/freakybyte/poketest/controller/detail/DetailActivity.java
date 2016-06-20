@@ -20,6 +20,7 @@ import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.freakybyte.poketest.PokeApplication;
 import com.freakybyte.poketest.R;
 import com.freakybyte.poketest.controller.MainActivity;
 import com.freakybyte.poketest.controller.detail.constuctors.DetailPresenter;
@@ -31,12 +32,17 @@ import com.freakybyte.poketest.model.summary.PokemonDetailModel;
 import com.freakybyte.poketest.ui.textview.AutoFitTxtView;
 import com.freakybyte.poketest.util.AndroidUtil;
 import com.freakybyte.poketest.util.PokeTestUtil;
-import com.freakybyte.poketest.util.WidgetUtils;
+import com.freakybyte.poketest.util.WidgetManager;
+
+import javax.inject.Inject;
 
 /**
  * Created by Jose Torres in FreakyByte on 14/06/16.
  */
 public class DetailActivity extends MainActivity implements DetailView {
+
+    @Inject
+    public WidgetManager mWidgetManager;
 
     public static final String TAG = "DetailActivity";
     public static final String TAG_ID = "PokemonID";
@@ -66,6 +72,8 @@ public class DetailActivity extends MainActivity implements DetailView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_detail);
+
+        ((PokeApplication) getApplication()).getStorageComponent().inject(this);
 
         setSupportActionBar(getToolbar());
 
@@ -184,7 +192,7 @@ public class DetailActivity extends MainActivity implements DetailView {
 
     @Override
     public void onErrorDownloading() {
-        WidgetUtils.createShortToast(R.string.error_service_retrieve_detail);
+        mWidgetManager.createShortToast(R.string.error_service_retrieve_detail);
     }
 
     @Override

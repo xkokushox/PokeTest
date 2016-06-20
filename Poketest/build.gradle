@@ -7,6 +7,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.0'
         classpath "io.realm:realm-gradle-plugin:1.0.0"
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -21,4 +22,21 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+// Define versions in a single place
+ext {
+    // Sdk and tools
+    minSdkVersion = 10
+    targetSdkVersion = 22
+    compileSdkVersion = 23
+    buildToolsVersion = '23.0.2'
+
+    // App dependencies
+    supportLibraryVersion = '23.3.0'
+    junitVersion = '4.12'
+    daggerVersion = '2.2'
+    retrofit = '2.0.2'
+    gson = '2.3.1'
+    fresco = '0.11.0'
 }
