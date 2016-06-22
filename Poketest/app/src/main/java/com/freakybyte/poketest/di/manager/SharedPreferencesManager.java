@@ -5,10 +5,12 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by Jose Torres in FreakyByte on 13/06/16.
  */
+@Singleton
 public class SharedPreferencesManager {
 
     private final String SHARED_PROJECT = "SharedPreferences_PokeTest";

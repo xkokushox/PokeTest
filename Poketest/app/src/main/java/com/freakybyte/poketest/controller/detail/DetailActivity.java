@@ -34,7 +34,7 @@ import com.freakybyte.poketest.model.summary.PokemonDetailModel;
 import com.freakybyte.poketest.ui.textview.AutoFitTxtView;
 import com.freakybyte.poketest.util.AndroidUtil;
 import com.freakybyte.poketest.util.PokeTestUtil;
-import com.freakybyte.poketest.util.WidgetManager;
+import com.freakybyte.poketest.di.manager.WidgetManager;
 
 import javax.inject.Inject;
 

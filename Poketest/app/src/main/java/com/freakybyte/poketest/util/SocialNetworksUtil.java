@@ -23,7 +23,7 @@ public class SocialNetworksUtil {
                     mActivity.startActivity(urlIntent);
                 }
         } catch (Exception e) {
-            DebugUtils.logError(TAG, "OpenWebUrl:: " + e.getLocalizedMessage());
+            DebugUtils.getSingleton().logError(TAG, "OpenWebUrl:: " + e.getLocalizedMessage());
         }
     }
 
@@ -47,7 +47,7 @@ public class SocialNetworksUtil {
             mActivity.startActivity(pageIntent);
             return true;
         } catch (Exception e) {
-            DebugUtils.logError(TAG, "OpenYoutubeVideo:: " + e.getLocalizedMessage());
+            DebugUtils.getSingleton().logError(TAG, "OpenYoutubeVideo:: " + e.getLocalizedMessage());
             return false;
         }
     }

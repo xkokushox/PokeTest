@@ -27,7 +27,7 @@ import com.freakybyte.poketest.controller.listener.RecyclerListListener;
 import com.freakybyte.poketest.di.module.WidgetModule;
 import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.util.DebugUtils;
-import com.freakybyte.poketest.util.WidgetManager;
+import com.freakybyte.poketest.di.manager.WidgetManager;
 
 import java.util.List;
 
@@ -103,7 +103,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
 
         mPresenter.getItems();
 
-        DebugUtils.logDebug(TAG, "Injection Worked:" + mWidgetManager != null);
+       DebugUtils.getSingleton().logDebug(TAG, "Injection Worked:" + mWidgetManager != null);
 
     }
 
@@ -156,7 +156,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
             public void run() {
                 getTxtEmptyView().setVisibility(getListAdapter().getListPokemon().isEmpty() ? View.VISIBLE : View.GONE);
                 getListAdapter().notifyDataSetChanged();
-                DebugUtils.logDebug(TAG, "TotalPokemons:: " + getListAdapter().getItemCount());
+               DebugUtils.getSingleton().logDebug(TAG, "TotalPokemons:: " + getListAdapter().getItemCount());
             }
         });
     }
@@ -186,7 +186,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
                 getListPokemons().smoothScrollToPosition(0);
                 break;
             default:
-                DebugUtils.logError(TAG, "OnClick:: view not handled " + v.getId());
+               DebugUtils.getSingleton().logError(TAG, "OnClick:: view not handled " + v.getId());
                 break;
         }
     }

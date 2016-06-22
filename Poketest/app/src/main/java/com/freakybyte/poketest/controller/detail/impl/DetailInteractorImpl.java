@@ -20,7 +20,7 @@ public class DetailInteractorImpl implements DetailInteractor {
 
     @Override
     public void getPokemonDetailFromServer(final OnRequestDetailListener mListener, long id) {
-        DebugUtils.logDebug(TAG, "GetPokemonDetailFromServer: Start");
+        DebugUtils.getSingleton().logDebug(TAG, "GetPokemonDetailFromServer: Start");
 
         MyApiEndpointInterface apiService = RetrofitBuilder.getRetrofitBuilder().create(MyApiEndpointInterface.class);
 
@@ -34,7 +34,7 @@ public class DetailInteractorImpl implements DetailInteractor {
                         mListener.onRequestSuccess(response.body());
                         break;
                     default:
-                        DebugUtils.logError("GetPokemonDetailFromServer:: Error Code:: " + response.code());
+                        DebugUtils.getSingleton().logError("GetPokemonDetailFromServer:: Error Code:: " + response.code());
                         mListener.onRequestFailed();
                         break;
                 }
@@ -42,7 +42,7 @@ public class DetailInteractorImpl implements DetailInteractor {
 
             @Override
             public void onFailure(Call<PokemonDetailModel> call, Throwable t) {
-                DebugUtils.logError("GetPokemonDetailFromServer:: onFailure:: " + t.getLocalizedMessage());
+                DebugUtils.getSingleton().logError("GetPokemonDetailFromServer:: onFailure:: " + t.getLocalizedMessage());
                 mListener.onRequestFailed();
             }
 

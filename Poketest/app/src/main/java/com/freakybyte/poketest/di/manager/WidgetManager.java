@@ -1,15 +1,17 @@
-package com.freakybyte.poketest.util;
+package com.freakybyte.poketest.di.manager;
 
 import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 
 /**
  * Created by Jose Torres in FreakyByte on 19/04/16.
  */
+@Singleton
 public class WidgetManager {
 
     private Toast mToast;
@@ -71,7 +73,7 @@ public class WidgetManager {
     }
 
     /**
-     * Method that creates a long Toast Message based in a string id
+     * Method that creates a long Toast Message based in a string idsoi
      *
      * @param id
      */

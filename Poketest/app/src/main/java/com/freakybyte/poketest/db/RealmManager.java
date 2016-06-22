@@ -121,7 +121,7 @@ public class RealmManager {
                 }
             });
         } catch (Exception ex) {
-            DebugUtils.logError(TAG, "insertPokemon:: " + ex.getLocalizedMessage());
+            DebugUtils.getSingleton().logError(TAG, "insertPokemon:: " + ex.getLocalizedMessage());
         }
     }
 }

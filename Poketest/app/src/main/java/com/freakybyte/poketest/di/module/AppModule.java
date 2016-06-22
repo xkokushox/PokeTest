@@ -3,7 +3,7 @@ package com.freakybyte.poketest.di.module;
 import android.app.Application;
 
 import com.freakybyte.poketest.PokeApplication;
-import com.freakybyte.poketest.di.ForApplication;
+import com.freakybyte.poketest.di.scope.ForApplication;
 
 import javax.inject.Singleton;
 

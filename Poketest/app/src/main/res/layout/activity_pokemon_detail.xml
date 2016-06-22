@@ -39,9 +39,9 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/header"
                     android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/header" />
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/imgPokemon"
@@ -49,12 +49,13 @@
                     android:layout_height="140dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:transitionName="@string/activity_image_trans"
                     android:layout_gravity="center"
                     android:elevation="6dp"
                     android:scaleType="centerInside"
+                    android:transitionName="@string/activity_image_trans"
                     fresco:actualImageScaleType="centerInside"
-                    fresco:failureImage="@drawable/background_type_fire"
+                    fresco:failureImage="@drawable/retry"
+                    fresco:failureImageScaleType="centerCrop"
                     fresco:roundAsCircle="true" />
 
             </RelativeLayout>

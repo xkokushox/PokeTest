@@ -2,7 +2,7 @@ package com.freakybyte.poketest.di.module;
 
 import android.content.Context;
 
-import com.freakybyte.poketest.util.WidgetManager;
+import com.freakybyte.poketest.di.manager.WidgetManager;
 
 import dagger.Module;
 import dagger.Provides;

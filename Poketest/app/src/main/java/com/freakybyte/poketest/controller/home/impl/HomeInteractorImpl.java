@@ -28,7 +28,7 @@ public class HomeInteractorImpl implements HomeInteractor {
 
     @Override
     public void getItemsFromServer(final OnRequestItemsListener mListener) {
-        DebugUtils.logDebug(TAG, "GetItemsFromServer: Start");
+        DebugUtils.getSingleton().logDebug(TAG, "GetItemsFromServer: Start");
 
         MyApiEndpointInterface apiService = RetrofitBuilder.getRetrofitBuilder().create(MyApiEndpointInterface.class);
 
@@ -41,15 +41,15 @@ public class HomeInteractorImpl implements HomeInteractor {
                     case 200:
                         AllPokeModel aPokemons = response.body();
 
-                        DebugUtils.logDebug(TAG, "GetItemsFromServer: Num Pokemons:: " + aPokemons.getResults().size());
-                        DebugUtils.logDebug(TAG, "GetItemsFromServer: Total Pokemons:: " + aPokemons.getCount());
+                        DebugUtils.getSingleton().logDebug(TAG, "GetItemsFromServer: Num Pokemons:: " + aPokemons.getResults().size());
+                        DebugUtils.getSingleton().logDebug(TAG, "GetItemsFromServer: Total Pokemons:: " + aPokemons.getCount());
 
                         mRealManager.insertAllPokemons(aPokemons.getResults());
 
                         mListener.onRequestSuccess(aPokemons.getResults());
                         break;
                     default:
-                        DebugUtils.logError("GetItemsFromServer:: Error Code:: " + response.code());
+                        DebugUtils.getSingleton().logError("GetItemsFromServer:: Error Code:: " + response.code());
                         mListener.onRequestBackup(mRealManager.getAllPokemons());
                         mListener.onRequestFailed();
                         break;
@@ -58,7 +58,7 @@ public class HomeInteractorImpl implements HomeInteractor {
 
             @Override
             public void onFailure(Call<AllPokeModel> call, Throwable t) {
-                DebugUtils.logError("GetItemsFromServer:: onFailure:: " + t.getLocalizedMessage());
+                DebugUtils.getSingleton().logError("GetItemsFromServer:: onFailure:: " + t.getLocalizedMessage());
                 mListener.onRequestBackup(mRealManager.getAllPokemons());
                 mListener.onRequestFailed();
             }
@@ -68,7 +68,7 @@ public class HomeInteractorImpl implements HomeInteractor {
 
     @Override
     public void getMoreItemsFromServer(final int nItems, final OnRequestItemsListener mListener) {
-        DebugUtils.logDebug(TAG, "getMoreItemsFromServer: Start");
+        DebugUtils.getSingleton().logDebug(TAG, "getMoreItemsFromServer: Start");
 
         MyApiEndpointInterface apiService = RetrofitBuilder.getRetrofitBuilder().create(MyApiEndpointInterface.class);
 
@@ -81,14 +81,14 @@ public class HomeInteractorImpl implements HomeInteractor {
                     case 200:
                         AllPokeModel aPokemons = response.body();
 
-                        DebugUtils.logDebug(TAG, "getMoreItemsFromServer: Num Pokemons:: " + aPokemons.getResults().size());
+                        DebugUtils.getSingleton().logDebug(TAG, "getMoreItemsFromServer: Num Pokemons:: " + aPokemons.getResults().size());
 
                         mRealManager.insertNewPokemons(aPokemons.getResults());
 
                         mListener.onRequestMoreData(aPokemons.getResults());
                         break;
                     default:
-                        DebugUtils.logError("GetItemsFromServer:: Error Code:: " + response.code());
+                        DebugUtils.getSingleton().logError("GetItemsFromServer:: Error Code:: " + response.code());
                         mListener.onRequestFailed();
                         break;
                 }
@@ -96,7 +96,7 @@ public class HomeInteractorImpl implements HomeInteractor {
 
             @Override
             public void onFailure(Call<AllPokeModel> call, Throwable t) {
-                DebugUtils.logError("GetItemsFromServer:: onFailure:: " + t.getLocalizedMessage());
+                DebugUtils.getSingleton().logError("GetItemsFromServer:: onFailure:: " + t.getLocalizedMessage());
                 mListener.onRequestFailed();
             }
 
