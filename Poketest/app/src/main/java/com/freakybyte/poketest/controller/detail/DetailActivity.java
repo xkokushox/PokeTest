@@ -73,7 +73,7 @@ public class DetailActivity extends MainActivity implements DetailView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_detail);
 
-        ((PokeApplication) getApplication()).getStorageComponent().inject(this);
+        ((PokeApplication) getApplication()).getWidgetComponent().inject(this);
 
         setSupportActionBar(getToolbar());
 

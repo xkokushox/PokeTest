@@ -2,7 +2,7 @@ package com.freakybyte.poketest.di.component;
 
 import com.freakybyte.poketest.controller.detail.DetailActivity;
 import com.freakybyte.poketest.controller.home.ui.HomeActivity;
-import com.freakybyte.poketest.di.module.StorageModule;
+import com.freakybyte.poketest.di.module.WidgetModule;
 
 import javax.inject.Singleton;
 
@@ -13,8 +13,8 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {StorageModule.class})
-public interface StorageComponent {
+@Component(modules = {WidgetModule.class})
+public interface WidgetComponent {
     void inject(HomeActivity activity);
     void inject(DetailActivity activity);
 }

@@ -4,9 +4,9 @@ import android.app.Application;
 import android.os.Handler;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.freakybyte.poketest.di.component.DaggerStorageComponent;
-import com.freakybyte.poketest.di.component.StorageComponent;
-import com.freakybyte.poketest.di.module.StorageModule;
+import com.freakybyte.poketest.di.component.DaggerWidgetComponent;
+import com.freakybyte.poketest.di.component.WidgetComponent;
+import com.freakybyte.poketest.di.module.WidgetModule;
 
 /**
  * Created by Jose Torres in FreakyByte on 19/04/16.
@@ -16,7 +16,7 @@ public class PokeApplication extends Application {
     private static PokeApplication singleton;
     private Handler mHandler = new Handler();
 
-    private StorageComponent storageComponent;
+    private WidgetComponent widgetComponent;
 
     public static PokeApplication getInstance() {
         return singleton;
@@ -29,7 +29,7 @@ public class PokeApplication extends Application {
         singleton = this;
         Fresco.initialize(this);
 
-        storageComponent = DaggerStorageComponent.builder().storageModule(new StorageModule(this)).build();
+        widgetComponent = DaggerWidgetComponent.builder().storageModule(new WidgetModule(this)).build();
 
     }
 
@@ -38,8 +38,8 @@ public class PokeApplication extends Application {
         mHandler.post(runnable);
     }
 
-    public StorageComponent getStorageComponent() {
-        return this.storageComponent;
+    public WidgetComponent getWidgetComponent() {
+        return this.widgetComponent;
     }
 
 }

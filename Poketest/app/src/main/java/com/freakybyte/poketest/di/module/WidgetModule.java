@@ -12,10 +12,10 @@ import dagger.Provides;
  * Created by Jose Torres in FreakyByte on 20/06/16.
  */
 @Module
-public class StorageModule {
+public class WidgetModule {
     private final PokeApplication app;
 
-    public StorageModule(PokeApplication app) {
+    public WidgetModule(PokeApplication app) {
         this.app = app;
     }
 

@@ -60,7 +60,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        ((PokeApplication) getApplication()).getStorageComponent().inject(this);
+        ((PokeApplication) getApplication()).getWidgetComponent().inject(this);
 
         setSupportActionBar(getToolbar());
 
