@@ -1,11 +1,14 @@
 package com.freakybyte.poketest.db;
 
-import com.freakybyte.poketest.PokeApplication;
+import android.content.Context;
+
 import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.util.DebugUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.realm.DynamicRealm;
 import io.realm.FieldAttribute;
@@ -22,15 +25,15 @@ import io.realm.Sort;
 public class RealmManager {
     public static final String TAG = "RealmManager";
 
-    private static RealmManager mRealManager;
     private Realm mRealm;
     private RealmMigration mRealMigration;
     private RealmConfiguration mRealmConfiguration;
 
-    public static RealmManager getInstance() {
-        if (mRealManager == null)
-            mRealManager = new RealmManager();
-        return mRealManager;
+    private Context mContext;
+
+    @Inject
+    public RealmManager(Context context) {
+        this.mContext = context;
     }
 
     private Realm getRealm() {
@@ -41,7 +44,7 @@ public class RealmManager {
 
     private RealmConfiguration getRealmConfiguration() {
         if (mRealmConfiguration == null) {
-            mRealmConfiguration = new RealmConfiguration.Builder(PokeApplication.getInstance())
+            mRealmConfiguration = new RealmConfiguration.Builder(mContext)
                     .deleteRealmIfMigrationNeeded().schemaVersion(1).migration(getRealMigration()).build();
 
         }

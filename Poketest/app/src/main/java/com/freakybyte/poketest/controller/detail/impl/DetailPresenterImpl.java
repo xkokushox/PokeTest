@@ -16,10 +16,13 @@ public class DetailPresenterImpl implements DetailPresenter, OnRequestDetailList
     private DetailView mView;
     private DetailInteractorImpl mInteractor;
 
+    private RealmManager mRealManager;
+
     @Inject
-    public DetailPresenterImpl(DetailView mView) {
+    public DetailPresenterImpl(RealmManager mRealManager, DetailView mView) {
         this.mView = mView;
         mInteractor = new DetailInteractorImpl();
+        this.mRealManager = mRealManager;
     }
 
     @Override
@@ -27,7 +30,7 @@ public class DetailPresenterImpl implements DetailPresenter, OnRequestDetailList
         if (mView == null)
             return;
 
-        mView.setPokemonItem(RealmManager.getInstance().getPokemon(id));
+        mView.setPokemonItem(mRealManager.getPokemon(id));
         mView.showLoader("Loading", false);
         mInteractor.getPokemonDetailFromServer(this, id);
     }

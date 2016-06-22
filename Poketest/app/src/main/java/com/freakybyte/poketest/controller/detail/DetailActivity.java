@@ -20,6 +20,7 @@ import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.freakybyte.poketest.PokeApplication;
 import com.freakybyte.poketest.R;
 import com.freakybyte.poketest.controller.MainActivity;
 import com.freakybyte.poketest.controller.detail.constuctors.DetailView;
@@ -68,7 +69,6 @@ public class DetailActivity extends MainActivity implements DetailView {
 
     private ProgressDialog mLoaderDialog;
 
-
     private PokeModel mPokemon;
 
     @Override
@@ -76,7 +76,9 @@ public class DetailActivity extends MainActivity implements DetailView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_detail);
 
-        DaggerDetailComponent.builder().widgetModule(new WidgetModule(this)).detailModule(new DetailModule(this));
+        DaggerDetailComponent.builder()
+                .realmComponent(((PokeApplication) getApplication()).getRealmComponent())
+                .widgetModule(new WidgetModule(this)).detailModule(new DetailModule(this)).build().inject(this);
 
         setSupportActionBar(getToolbar());
 

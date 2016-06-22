@@ -1,4 +1,4 @@
-package com.freakybyte.poketest.di;
+package com.freakybyte.poketest.di.scope;
 
 import java.lang.annotation.Retention;
 

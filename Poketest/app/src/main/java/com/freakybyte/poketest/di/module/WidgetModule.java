@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.freakybyte.poketest.util.WidgetManager;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -21,7 +19,6 @@ public class WidgetModule {
     }
 
     @Provides
-    @Singleton
     WidgetManager provideWidgetManager() {
         return new WidgetManager(app);
     }

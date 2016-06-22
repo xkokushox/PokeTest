@@ -1,4 +1,4 @@
-package com.freakybyte.poketest.util;
+package com.freakybyte.poketest.di.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.freakybyte.poketest.PokeApplication;
 import com.freakybyte.poketest.R;
 import com.freakybyte.poketest.controller.MainActivity;
 import com.freakybyte.poketest.controller.detail.DetailActivity;
@@ -63,14 +64,14 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        DaggerHomeComponent.builder().homeModule(new HomeModule(this)).widgetModule(new WidgetModule(this)).build().inject(this);
+        DaggerHomeComponent.builder()
+                .realmComponent(((PokeApplication) getApplication()).getRealmComponent())
+                .homeModule(new HomeModule(this)).widgetModule(new WidgetModule(this)).build().inject(this);
 
         setSupportActionBar(getToolbar());
 
         bLoading = true;
         bLoadMore = true;
-
-        mPresenter = new HomePresenterImpl(this);
 
         getSwipeRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

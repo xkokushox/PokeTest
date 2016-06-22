@@ -20,6 +20,12 @@ public class HomeInteractorImpl implements HomeInteractor {
 
     public static final String TAG = "HomeInteractorImpl";
 
+    private RealmManager mRealManager;
+
+    public HomeInteractorImpl(RealmManager mRealManager) {
+        this.mRealManager = mRealManager;
+    }
+
     @Override
     public void getItemsFromServer(final OnRequestItemsListener mListener) {
         DebugUtils.logDebug(TAG, "GetItemsFromServer: Start");
@@ -38,13 +44,13 @@ public class HomeInteractorImpl implements HomeInteractor {
                         DebugUtils.logDebug(TAG, "GetItemsFromServer: Num Pokemons:: " + aPokemons.getResults().size());
                         DebugUtils.logDebug(TAG, "GetItemsFromServer: Total Pokemons:: " + aPokemons.getCount());
 
-                        RealmManager.getInstance().insertAllPokemons(aPokemons.getResults());
+                        mRealManager.insertAllPokemons(aPokemons.getResults());
 
                         mListener.onRequestSuccess(aPokemons.getResults());
                         break;
                     default:
                         DebugUtils.logError("GetItemsFromServer:: Error Code:: " + response.code());
-                        mListener.onRequestBackup(RealmManager.getInstance().getAllPokemons());
+                        mListener.onRequestBackup(mRealManager.getAllPokemons());
                         mListener.onRequestFailed();
                         break;
                 }
@@ -53,7 +59,7 @@ public class HomeInteractorImpl implements HomeInteractor {
             @Override
             public void onFailure(Call<AllPokeModel> call, Throwable t) {
                 DebugUtils.logError("GetItemsFromServer:: onFailure:: " + t.getLocalizedMessage());
-                mListener.onRequestBackup(RealmManager.getInstance().getAllPokemons());
+                mListener.onRequestBackup(mRealManager.getAllPokemons());
                 mListener.onRequestFailed();
             }
 
@@ -77,14 +83,12 @@ public class HomeInteractorImpl implements HomeInteractor {
 
                         DebugUtils.logDebug(TAG, "getMoreItemsFromServer: Num Pokemons:: " + aPokemons.getResults().size());
 
-                        RealmManager.getInstance().insertNewPokemons(aPokemons.getResults());
+                        mRealManager.insertNewPokemons(aPokemons.getResults());
 
                         mListener.onRequestMoreData(aPokemons.getResults());
                         break;
                     default:
                         DebugUtils.logError("GetItemsFromServer:: Error Code:: " + response.code());
-                        // WidgetUtils.createShortToast(PokeApplication.getInstance().getString(R.string.error_no_network));
-                        // WidgetUtils.createShortToast("Status Code:: " + statusCode + " Response:: " + responseString);
                         mListener.onRequestFailed();
                         break;
                 }
