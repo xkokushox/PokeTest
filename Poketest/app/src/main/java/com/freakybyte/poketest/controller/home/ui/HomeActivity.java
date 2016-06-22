@@ -20,7 +20,7 @@ import com.freakybyte.poketest.controller.dialog.ProgressDialog;
 import com.freakybyte.poketest.controller.home.adapter.PokeListAdapter;
 import com.freakybyte.poketest.controller.home.constructors.HomeView;
 import com.freakybyte.poketest.controller.home.di.DaggerHomeComponent;
-import com.freakybyte.poketest.controller.home.di.HomePresenterModule;
+import com.freakybyte.poketest.controller.home.di.HomeModule;
 import com.freakybyte.poketest.controller.home.impl.HomePresenterImpl;
 import com.freakybyte.poketest.controller.listener.RecyclerListListener;
 import com.freakybyte.poketest.di.module.WidgetModule;
@@ -63,7 +63,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        DaggerHomeComponent.builder().homePresenterModule(new HomePresenterModule(this)).widgetModule(new WidgetModule(this)).build().inject(this);
+        DaggerHomeComponent.builder().homeModule(new HomeModule(this)).widgetModule(new WidgetModule(this)).build().inject(this);
 
         setSupportActionBar(getToolbar());
 

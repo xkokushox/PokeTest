@@ -11,7 +11,7 @@ import dagger.Component;
  * Created by Jose Torres in FreakyByte on 21/06/16.
  */
 @Singleton
-@Component(modules = {HomePresenterModule.class, WidgetModule.class})
+@Component(modules = {HomeModule.class, WidgetModule.class})
 public interface HomeComponent {
     void inject(HomeActivity activity);
 }

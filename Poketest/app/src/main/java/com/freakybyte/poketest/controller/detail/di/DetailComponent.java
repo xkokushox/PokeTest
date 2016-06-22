@@ -1,4 +1,4 @@
-package com.freakybyte.poketest.di.component;
+package com.freakybyte.poketest.controller.detail.di;
 
 import com.freakybyte.poketest.controller.detail.DetailActivity;
 import com.freakybyte.poketest.di.module.WidgetModule;
@@ -12,8 +12,7 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {WidgetModule.class})
-public interface WidgetComponent {
-
+@Component(modules = {WidgetModule.class, DetailModule.class})
+public interface DetailComponent {
     void inject(DetailActivity activity);
 }

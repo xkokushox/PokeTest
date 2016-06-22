@@ -6,6 +6,8 @@ import com.freakybyte.poketest.controller.detail.listener.OnRequestDetailListene
 import com.freakybyte.poketest.db.RealmManager;
 import com.freakybyte.poketest.model.summary.PokemonDetailModel;
 
+import javax.inject.Inject;
+
 /**
  * Created by Jose Torres in FreakyByte on 14/06/16.
  */
@@ -14,6 +16,7 @@ public class DetailPresenterImpl implements DetailPresenter, OnRequestDetailList
     private DetailView mView;
     private DetailInteractorImpl mInteractor;
 
+    @Inject
     public DetailPresenterImpl(DetailView mView) {
         this.mView = mView;
         mInteractor = new DetailInteractorImpl();

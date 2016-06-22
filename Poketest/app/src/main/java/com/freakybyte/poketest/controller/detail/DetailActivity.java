@@ -20,13 +20,14 @@ import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
-import com.freakybyte.poketest.PokeApplication;
 import com.freakybyte.poketest.R;
 import com.freakybyte.poketest.controller.MainActivity;
-import com.freakybyte.poketest.controller.detail.constuctors.DetailPresenter;
 import com.freakybyte.poketest.controller.detail.constuctors.DetailView;
+import com.freakybyte.poketest.controller.detail.di.DaggerDetailComponent;
+import com.freakybyte.poketest.controller.detail.di.DetailModule;
 import com.freakybyte.poketest.controller.detail.impl.DetailPresenterImpl;
 import com.freakybyte.poketest.controller.dialog.ProgressDialog;
+import com.freakybyte.poketest.di.module.WidgetModule;
 import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.model.summary.PokemonDetailModel;
 import com.freakybyte.poketest.ui.textview.AutoFitTxtView;
@@ -43,6 +44,9 @@ public class DetailActivity extends MainActivity implements DetailView {
 
     @Inject
     public WidgetManager mWidgetManager;
+
+    @Inject
+    public DetailPresenterImpl mPresenter;
 
     public static final String TAG = "DetailActivity";
     public static final String TAG_ID = "PokemonID";
@@ -64,7 +68,6 @@ public class DetailActivity extends MainActivity implements DetailView {
 
     private ProgressDialog mLoaderDialog;
 
-    private DetailPresenter mPresenter;
 
     private PokeModel mPokemon;
 
@@ -73,11 +76,9 @@ public class DetailActivity extends MainActivity implements DetailView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_detail);
 
-        ((PokeApplication) getApplication()).getWidgetComponent().inject(this);
+        DaggerDetailComponent.builder().widgetModule(new WidgetModule(this)).detailModule(new DetailModule(this));
 
         setSupportActionBar(getToolbar());
-
-        mPresenter = new DetailPresenterImpl(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -10,11 +10,11 @@ import dagger.Provides;
  */
 
 @Module
-public class HomePresenterModule {
+public class HomeModule {
 
     private final HomeView mView;
 
-    public HomePresenterModule(HomeView view) {
+    public HomeModule(HomeView view) {
         mView = view;
     }
 
