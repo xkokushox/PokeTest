@@ -13,16 +13,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.freakybyte.poketest.PokeApplication;
 import com.freakybyte.poketest.R;
 import com.freakybyte.poketest.controller.MainActivity;
 import com.freakybyte.poketest.controller.detail.DetailActivity;
 import com.freakybyte.poketest.controller.dialog.ProgressDialog;
 import com.freakybyte.poketest.controller.home.adapter.PokeListAdapter;
-import com.freakybyte.poketest.controller.home.constructors.HomePresenter;
 import com.freakybyte.poketest.controller.home.constructors.HomeView;
+import com.freakybyte.poketest.controller.home.di.DaggerHomeComponent;
+import com.freakybyte.poketest.controller.home.di.HomePresenterModule;
 import com.freakybyte.poketest.controller.home.impl.HomePresenterImpl;
 import com.freakybyte.poketest.controller.listener.RecyclerListListener;
+import com.freakybyte.poketest.di.module.WidgetModule;
 import com.freakybyte.poketest.model.PokeModel;
 import com.freakybyte.poketest.util.DebugUtils;
 import com.freakybyte.poketest.util.WidgetManager;
@@ -40,6 +41,9 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
     @Inject
     public WidgetManager mWidgetManager;
 
+    @Inject
+    public HomePresenterImpl mPresenter;
+
     private RecyclerView mRecyclerView;
     private TextView txtEmptyView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -48,7 +52,6 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
     private LinearLayout mLayoutToolbarWrapper;
     private PokeListAdapter mAdapter;
 
-    private HomePresenter mPresenter;
 
     private LinearLayoutManager mLayoutManager;
 
@@ -60,7 +63,7 @@ public class HomeActivity extends MainActivity implements HomeView, RecyclerList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        ((PokeApplication) getApplication()).getWidgetComponent().inject(this);
+        DaggerHomeComponent.builder().homePresenterModule(new HomePresenterModule(this)).widgetModule(new WidgetModule(this)).build().inject(this);
 
         setSupportActionBar(getToolbar());
 

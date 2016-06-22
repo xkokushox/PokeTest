@@ -29,7 +29,7 @@ public class PokeApplication extends Application {
         singleton = this;
         Fresco.initialize(this);
 
-        widgetComponent = DaggerWidgetComponent.builder().storageModule(new WidgetModule(this)).build();
+        widgetComponent = DaggerWidgetComponent.builder().widgetModule(new WidgetModule(this)).build();
 
     }
 

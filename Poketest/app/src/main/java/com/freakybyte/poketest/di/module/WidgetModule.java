@@ -1,6 +1,7 @@
 package com.freakybyte.poketest.di.module;
 
-import com.freakybyte.poketest.PokeApplication;
+import android.content.Context;
+
 import com.freakybyte.poketest.util.WidgetManager;
 
 import javax.inject.Singleton;
@@ -13,9 +14,9 @@ import dagger.Provides;
  */
 @Module
 public class WidgetModule {
-    private final PokeApplication app;
+    private final Context app;
 
-    public WidgetModule(PokeApplication app) {
+    public WidgetModule(Context app) {
         this.app = app;
     }
 

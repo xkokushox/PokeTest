@@ -2,7 +2,6 @@ package com.freakybyte.poketest.di.component;
 
 import android.app.Application;
 
-import com.freakybyte.poketest.controller.MainActivity;
 import com.freakybyte.poketest.di.module.AppModule;
 
 import javax.inject.Singleton;
@@ -17,7 +16,5 @@ import dagger.Component;
 @Component(modules = {AppModule.class})
 public interface AppComponent {
     void inject(Application application);
-
-    void inject(MainActivity activity);
 
 }

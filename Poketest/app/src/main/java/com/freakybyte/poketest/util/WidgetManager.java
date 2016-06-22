@@ -1,6 +1,5 @@
 package com.freakybyte.poketest.util;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
@@ -18,7 +17,7 @@ public class WidgetManager {
     private Handler mHandler;
 
     @Inject
-    public WidgetManager(Application context) {
+    public WidgetManager(Context context) {
         this.mContext = context;
         mHandler = new Handler();
     }

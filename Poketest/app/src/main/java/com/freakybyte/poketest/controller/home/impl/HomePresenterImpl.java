@@ -1,12 +1,16 @@
 package com.freakybyte.poketest.controller.home.impl;
 
 
+import android.support.annotation.NonNull;
+
 import com.freakybyte.poketest.controller.home.constructors.HomePresenter;
 import com.freakybyte.poketest.controller.home.constructors.HomeView;
 import com.freakybyte.poketest.controller.home.listener.OnRequestItemsListener;
 import com.freakybyte.poketest.model.PokeModel;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created by Jose Torres in FreakyByte on 01/06/16.
@@ -16,7 +20,8 @@ public class HomePresenterImpl implements HomePresenter, OnRequestItemsListener 
     private HomeView mHomeView;
     private HomeInteractorImpl mHomeInteractor;
 
-    public HomePresenterImpl(HomeView homeView) {
+    @Inject
+    public HomePresenterImpl(@NonNull HomeView homeView) {
         mHomeView = homeView;
         mHomeInteractor = new HomeInteractorImpl();
     }
