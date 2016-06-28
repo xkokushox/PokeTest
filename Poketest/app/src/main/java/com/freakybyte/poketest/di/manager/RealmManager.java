@@ -1,4 +1,4 @@
-package com.freakybyte.poketest.db;
+package com.freakybyte.poketest.di.manager;
 
 import android.content.Context;
 

@@ -3,7 +3,7 @@ package com.freakybyte.poketest.controller.detail.impl;
 import com.freakybyte.poketest.controller.detail.constuctors.DetailPresenter;
 import com.freakybyte.poketest.controller.detail.constuctors.DetailView;
 import com.freakybyte.poketest.controller.detail.listener.OnRequestDetailListener;
-import com.freakybyte.poketest.db.RealmManager;
+import com.freakybyte.poketest.di.manager.RealmManager;
 import com.freakybyte.poketest.model.summary.PokemonDetailModel;
 
 import javax.inject.Inject;

@@ -2,7 +2,7 @@ package com.freakybyte.poketest.di.module;
 
 import android.content.Context;
 
-import com.freakybyte.poketest.db.RealmManager;
+import com.freakybyte.poketest.di.manager.RealmManager;
 
 import javax.inject.Singleton;
 

@@ -4,7 +4,7 @@ package com.freakybyte.poketest.controller.home.impl;
 import com.freakybyte.poketest.controller.home.constructors.HomePresenter;
 import com.freakybyte.poketest.controller.home.constructors.HomeView;
 import com.freakybyte.poketest.controller.home.listener.OnRequestItemsListener;
-import com.freakybyte.poketest.db.RealmManager;
+import com.freakybyte.poketest.di.manager.RealmManager;
 import com.freakybyte.poketest.model.PokeModel;
 
 import java.util.List;
